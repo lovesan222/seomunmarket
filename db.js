@@ -34,7 +34,7 @@ function getMemoById(id, callback){
 }
 
 
-  function updateMemoById(id, content, callback){
+  function updateMemoById(id,title,content,callback){
     connection.query(`UPDATE seomunboard SET title ='${title}',content='${content}', updated=NOW() WHERE id='${id}'`, (err, result) => {
         if(err) throw err;
         callback();

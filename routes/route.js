@@ -58,6 +58,30 @@ router.get('/market_notice_update',(req,res) => {
 });
 
 
+router.post('/market_notice_update', [check('title').isLength({ min: 1 , max: 3000})],
+  (req,res) => {
+      let errs = validationResult(req);
+
+      let param = JSON.parse(JSON.stringify(req.body));
+      let id = param['id'];
+      let title = param['title'];
+      let content = param['content'];
+
+      if (errs['errors'].length>0){
+          db.updateMemoById(id, (row)=>{ 
+          res.render('market_notice_update',{row:row[0], errs:errs['errors']});
+      });
+      }else{
+          db.updateMemoById(id,title,content, () =>{
+          res.redirect('/');
+          });
+      }
+  });
+
+
+
+
+///
 
 router.get('/notice_read', function(req, res) {
   let id = req.query.id;
@@ -82,25 +106,3 @@ router.get('/deletememo', (req, res) =>{
 });
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
